@@ -1,11 +1,42 @@
-let buttonEl = document.querySelector("#save-task");
+let formEl = document.querySelector("#task-form");
 let tasksToDoEl = document.querySelector("#tasks-to-do");
 
-let createTaskHandler = function () {
+let taskFormHandler = function (event) {
+  event.preventDefault();
+
+  let taskNameInput = document.querySelector("input[name='task-name']").value;
+  let taskTypeInput = document.querySelector("select[name='task-type']").value;
+
+  if (!taskNameInput || !taskTypeInput) {
+    alert("You need to fill out the task form!");
+    return false;
+  }
+
+  formEl.reset();
+
+  let taskDataObj = {
+    name: taskNameInput,
+    type: taskTypeInput,
+  };
+
+  createTaskEl(taskDataObj);
+};
+
+let createTaskEl = function (taskDataObj) {
   let listItemEl = document.createElement("li");
   listItemEl.className = "task-item";
-  listItemEl.textContent = "This is a new task.";
+
+  let taskInfoEl = document.createElement("div");
+  taskInfoEl.className = "task-info";
+  taskInfoEl.innerHTML =
+    "<h3 class='task-name'>" +
+    taskDataObj.name +
+    "</h3><span class='task-type'>" +
+    taskDataObj.type +
+    "</span>";
+
+  listItemEl.appendChild(taskInfoEl);
   tasksToDoEl.appendChild(listItemEl);
 };
 
-buttonEl.addEventListener("click", createTaskHandler);
+formEl.addEventListener("submit", taskFormHandler);
